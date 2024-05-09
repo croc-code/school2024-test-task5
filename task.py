@@ -24,6 +24,7 @@ edge = len(interest) / 2
 stakeholders = {stakeholder: (influence[stakeholder], interest[stakeholder]) for stakeholder in interest
                 if influence[stakeholder] >= edge and interest[stakeholder] >= edge}
 
+
 # записываем полученных стейкхолдеров в файл
 with open('result.txt', 'w') as file:
     for stakeholder in stakeholders:

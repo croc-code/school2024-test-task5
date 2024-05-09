@@ -76,7 +76,7 @@ Stakeholder 3
 2. Запустить main.py следующими командами:
 
 ```
-python main.py interest_file.txt interest_file.txt influence_file.txt
+python main.py interest_file.txt influence_file.txt
 ```
 
 Где "interest_file.txt" и "influence_file.txt" - примеры входных файлов интереса и влияния

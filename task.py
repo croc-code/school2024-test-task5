@@ -17,5 +17,14 @@ def get_ratings(filename: str) -> dict:
 interest = get_ratings('interest.txt')
 influence = get_ratings('influence.txt')
 
-print(interest)
-print(influence)
+# значение границы для осей ограничивающих правый верхний квадрант
+edge = len(interest) / 2
+
+# получаем стейкхолдеров, находящихся в правом верхнем квадранте
+stakeholders = {stakeholder: (influence[stakeholder], interest[stakeholder]) for stakeholder in interest
+                if influence[stakeholder] >= edge and interest[stakeholder] >= edge}
+
+# записываем полученных стейкхолдеров в файл
+with open('result.txt', 'w') as file:
+    for stakeholder in stakeholders:
+        file.write(stakeholder + "\n")

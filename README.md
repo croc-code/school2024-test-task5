@@ -85,4 +85,6 @@ python main.py interest_file.txt interest_file.txt influence_file.txt
 python main.py
 ```
 
-3. В данном случае вместо входных файлов будут использоваться файлы по умолчанию: и 'interest.txt' и "influence.txt" 3. Результат работы программы будут в файле "result.txt"
+В данном случае вместо входных файлов будут использоваться файлы по умолчанию: и 'interest.txt' и "influence.txt".
+
+3. Результат работы программы будет в файле "result.txt"

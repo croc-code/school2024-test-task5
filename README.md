@@ -75,10 +75,14 @@ Stakeholder 3
 1. Клонировать репозиторий
 2. Запустить main.py следующими командами:
 
+```
 python main.py interest_file.txt interest_file.txt influence_file.txt
+```
 
 Где "interest_file.txt" и "influence_file.txt" - примеры входных файлов интереса и влияния
 
+```
 python main.py
+```
 
-В данном случае вместо входных файлов будут использоваться файлы по умолчанию: и 'interest.txt' и "influence.txt" 3. Результат работы программы будут в файле "result.txt"
+3. В данном случае вместо входных файлов будут использоваться файлы по умолчанию: и 'interest.txt' и "influence.txt" 3. Результат работы программы будут в файле "result.txt"

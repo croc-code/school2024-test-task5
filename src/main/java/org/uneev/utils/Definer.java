@@ -1,16 +1,16 @@
 package org.uneev.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.uneev.exceptions.InvalidFilePatternException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // We don't need to create multiple definer objects, so we'll use an enum based singleton
 public enum Definer {
@@ -78,7 +78,7 @@ public enum Definer {
             throw new RuntimeException(e);
         }
 
-        String[] stakeholders = lines.get(0).split(" \\| ");
+        String[] stakeholders = lines.get(0).split("\\s+\\|\\s+");
 
         if (stakeholders.length != lines.size() - 1) {
             throw new InvalidFilePatternException(
@@ -87,13 +87,13 @@ public enum Definer {
         }
 
         for (int i = 0; i < stakeholders.length; i++) {
-            String[] symbols = lines.get(i+1).split("\s+");
+            String[] symbols = lines.get(i+1).split("\\s+");
 
             if (symbols.length != stakeholders.length)
                 throw new InvalidFilePatternException("The number of ranks does not match the number of stakeholders");
 
             double sum = Arrays.stream(symbols)
-                    .filter(StringUtils::isNumeric)
+                    .filter(NumberUtils::isCreatable)
                     .mapToDouble(Double::parseDouble)
                     .sum();
 

@@ -40,9 +40,10 @@ internal class Program
     }
 
     if (await WriteMostImportantStakeholdersToFileAsync(StakeholdersMap, pathToResultFile, StakeholdersMap.Keys.ToArray().Length / 2)){
-      Console.Write("Запись в файл results.txt завершена!");
+      Console.WriteLine("\nЗапись в файл results.txt завершена!");
     }
-
+    Console.Write("\nНажмите любую клавишу, чтобы завершить работу");
+    Console.ReadKey();
   }
 
   // Асинхронный метод для считывания данных из 

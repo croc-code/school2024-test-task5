@@ -1,4 +1,7 @@
 import java.io.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class StakeholderAnalysis {
     private static String pathToInterestMatrix;
@@ -14,118 +17,75 @@ public class StakeholderAnalysis {
     private static void setFilePath(String[] arg) throws IOException {
         pathToInterestMatrix = (arg.length == 2) ? arg[0] : "interest.txt";
         pathToInfluenceMatrix = (arg.length == 2) ? arg[1] : "influence.txt";
-
     }
 
     /**
-     * Считывает стейкхолдеров из первой строки файла pathToInterestMatrix.
+     * Считывает из файла имена стейкхолдеров и их ранги и возвращает их в виде HashMap.
      *
-     * @return массив строк, содержащий стейкхолдеров, прочитанных из файла
-     * @throws RuntimeException
+     * @param path путь к файлу с матрицей
+     * @return HashMap, где ключами являются имена стейкхолдеров, а значениями - их ранги
      */
-    private static String[] readStakeholdersFromFile() {
-        String[] stakeholders;
-        try (BufferedReader reader = new BufferedReader(new FileReader(pathToInterestMatrix))) {
-            String line = reader.readLine();
-            String[] rawStakeholders = line.split("\\|"); //Разделяет строку на отдельные элементы согласно регулярному выражению "\\|"
-            stakeholders = new String[rawStakeholders.length];
+    private static HashMap<String, Double> getStakeholdersWithRanksFromFile(String path) {
+        HashMap<String, Double> stakeholdersWithRanks = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            //Считывание стейкхолдеров
+            String lineStakeholders = reader.readLine();
+            String[] rawStakeholders = lineStakeholders.split("\\|"); //Разделяет строку на отдельные элементы согласно регулярному выражению "\\|"
+            String[] stakeholders = new String[rawStakeholders.length];
             for (int i = 0; i < rawStakeholders.length; i++) {
                 stakeholders[i] = rawStakeholders[i].trim(); //Убирает лишние пробелы при добавлении в результирующий массив
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return stakeholders;
-    }
-
-    /**
-     * Считывает матрицу из файла.
-     *
-     * @param size размер матрицы
-     * @param path путь к файлу с матрицей
-     * @return двумерный массив с матрицей
-     */
-    private static double[][] readMatrixFromFile(int size, String path) {
-        double[][] matrix = new double[size][size];
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            reader.readLine(); //Пропускает строку со стейкхолдерами
-            for (int i = 0; i < size; i++) {
+            //Считывание матрицы
+            for (int i = 0; i < stakeholders.length; i++) {
                 String[] line = reader.readLine().split(" ");
-                for (int j = 0; j < size; j++) {
+                double rowRank = 0;
+                for (int j = 0; j < stakeholders.length; j++) {
                     if (!line[j].equals("_")) {
-                        matrix[i][j] = Double.parseDouble(line[j]);
-                    } else {
-                        matrix[i][j] = 0;
+                        rowRank += Double.parseDouble(line[j]);
                     }
                 }
+                stakeholdersWithRanks.put(stakeholders[i], rowRank);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return matrix;
+        return stakeholdersWithRanks;
     }
 
     /**
-     * Возвращает индексы стейкхолдеров: если стейкхолдер является важным - его индекс, иначе -1.
+     * Находит стейкхолдеров с рангами выше среднего по матрице.
      *
-     * @param interestMatrix  матрица интересов
-     * @param influenceMatrix матрица влияния
-     * @param size            размер матрицы
-     * @return массив индексов стейкхолдеров
+     * @param map HashMap, содержащая пары ключ-значение, где ключом является имя стейкхолдера, а значением - его ранг
+     * @return HashMap, содержащая только стейкхолдеров с рангами выше среднего
      */
-    private static int[] getStakeholdersIndex(double[][] interestMatrix, double[][] influenceMatrix, int size) {
-        int[] result = new int[size];
+    private static HashMap<String, Double> findMainStakeholders(HashMap<String, Double> map) {
+        double rank = map.values().stream().mapToDouble(Double::doubleValue).sum(); //вычисляет итоговый ранг стейкхолдера
+        double averageRank = rank / map.size();
 
-        double[] interestRank = getRanks(interestMatrix);
-        double[] influenceRank = getRanks(influenceMatrix);
-
-
-        for (int i = 0; i < result.length; i++) {
-            result[i] = (interestRank[i] != 0 && influenceRank[i] != 0) ? i : -1;
-        }
-        return result;
-    }
-
-    /**
-     * Возвращает массив рангов стейкхолдеров согласно условию.
-     * Записывается ранг тех, кто располагаются в правом верхнем квадранте матрицы.
-     *
-     * @param matrix входная матрица
-     * @return массив рангов стейкхолдеров с учетом условий
-     */
-    private static double[] getRanks(double[][] matrix) {
-        int size = matrix.length;
-        double rankConstraints = size / 2.0;
-        double[] ranks = new double[size];
-
-        for (int i = 0; i < size; i++) {
-            double rank = 0;
-            for (int j = 0; j < matrix[i].length; j++) {
-                rank += matrix[i][j];
-            }
-            if (rank >= rankConstraints) {
-                ranks[i] = rank;
+        Iterator<Map.Entry<String, Double>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Double> entry = iterator.next();
+            if (entry.getValue() < averageRank) {
+                iterator.remove();
             }
         }
-        return ranks;
+        return map;
     }
 
     /**
-     * Записывает стейкхолдеров, указанных по индексам в массиве (индекс которых не равен -1), в файл "result.txt".
+     * Определяет важных стейкхолдеров и записывает в файл 'result.txt'.
      *
-     * @param idxOfStakeholders массив индексов стейкхолдеров, которые будут записаны
-     * @param stakeholders      массив стейкхолдеров
+     * @param interest  HashMap, стейкхолдеры из матрицы интересов с рангами, которые подошли по условию
+     * @param influence HashMap, стейкхолдеры из матрицы влияния с рангами, которые подошли по условию
      */
-    private static void writeResToFile(int[] idxOfStakeholders, String[] stakeholders) {
-
+    private static void writeMainStakeholders(HashMap<String, Double> interest, HashMap<String, Double> influence) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("result.txt"))) {
-
-            for (int i = 0; i < idxOfStakeholders.length; i++) {
-                if (idxOfStakeholders[i] != -1) {
-                    writer.write(stakeholders[idxOfStakeholders[i]]);
+            for (String key : interest.keySet()) {
+                if (influence.containsKey(key)) { //Если у стейкхолдера оба ранга удовлетворяют условию, то он попадает в файл важных стейкхолдеров
+                    writer.write(key);
                     writer.newLine();
-                    System.out.print(stakeholders[idxOfStakeholders[i]]);
-                    System.out.println();
+                    System.out.println(key);
                 }
             }
         } catch (IOException e) {
@@ -135,10 +95,13 @@ public class StakeholderAnalysis {
 
     public static void main(String[] args) throws IOException {
         setFilePath(args);
-        String[] stakeholders = readStakeholdersFromFile(); //Допущение: порядок и количество стейкхолдеров в обеих матрицах одинаков
-        double[][] interestMatrix = readMatrixFromFile(stakeholders.length, pathToInterestMatrix);
-        double[][] influenceMatrix = readMatrixFromFile(stakeholders.length, pathToInfluenceMatrix);
-        int[] resIndex = getStakeholdersIndex(interestMatrix, influenceMatrix, stakeholders.length);
-        writeResToFile(resIndex, stakeholders);
+
+        HashMap<String, Double> interestStakeholders = getStakeholdersWithRanksFromFile(pathToInterestMatrix);
+        HashMap<String, Double> influenceStakeholders = getStakeholdersWithRanksFromFile(pathToInfluenceMatrix);
+
+        HashMap<String, Double> mainInterestStakeholders = findMainStakeholders(interestStakeholders);
+        HashMap<String, Double> mainInfluenceStakeholders = findMainStakeholders(influenceStakeholders);
+
+        writeMainStakeholders(mainInterestStakeholders, mainInfluenceStakeholders);
     }
 }

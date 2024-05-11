@@ -57,15 +57,15 @@ Stakeholder 3
 ## Инструкция по сборке и запуску решения
 1. Склонируйте репозиторий на локальную машину и перейдите в директорию проекта.
 
-2. Скомпилируйте программу без параметров
+2. Скомпилируйте программу 
 ```bash
 javac StakeholderAnalysis.java
 ```
-Либо с указанием путей до файлов `interest.txt` и `influence.txt`
-```bash
-javac StakeholderAnalysis.java <путь_до_файла_interest.txt> <путь_до_файла_influence.txt>
-```
-4. Запустите программу
+3. Запустите программу без параметров
 ```bash
 java StakeholderAnalysis
+```
+Либо с указанием путей до файлов `interest.txt` и `influence.txt`
+```bash
+java StakeholderAnalysis <путь_до_файла_interest.txt> <путь_до_файла_influence.txt>
 ```

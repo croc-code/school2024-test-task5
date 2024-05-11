@@ -1,0 +1,14 @@
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\bin\Debug\net8.0\KrokTestCase2024.exe
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\bin\Debug\net8.0\KrokTestCase2024.deps.json
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\bin\Debug\net8.0\KrokTestCase2024.runtimeconfig.json
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\bin\Debug\net8.0\KrokTestCase2024.dll
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\bin\Debug\net8.0\KrokTestCase2024.pdb
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\KrokTestCase2024.GeneratedMSBuildEditorConfig.editorconfig
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\KrokTestCase2024.AssemblyInfoInputs.cache
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\KrokTestCase2024.AssemblyInfo.cs
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\KrokTestCase2024.csproj.CoreCompileInputs.cache
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\KrokTestCase2024.dll
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\refint\KrokTestCase2024.dll
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\KrokTestCase2024.pdb
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\KrokTestCase2024.genruntimeconfig.cache
+D:\VisualProjects\KrokTestCase2024\KrokTestCase2024\obj\Debug\net8.0\ref\KrokTestCase2024.dll

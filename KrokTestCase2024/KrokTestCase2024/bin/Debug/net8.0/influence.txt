@@ -1,0 +1,4 @@
+Stakeholder 1 | Stakeholder 2 | Stakeholder 3
+_ 1 1
+0 _ 0.5
+0 0.5 _

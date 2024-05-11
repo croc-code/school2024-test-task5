@@ -10,13 +10,13 @@ internal class Program
     // Stakeholder - [x,y]
     Dictionary<string, double[]> StakeholdersMap = new Dictionary<string, double[]>();
 
-    string pathToInterestFile = Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\StakeholdersData\interest.txt");
-    string pathToInfluenceFile = Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\StakeholdersData\influence.txt");
-    string pathToResultFile = Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\StakeholdersData\result.txt");
+    string pathToInterestFile = Path.Combine(AppContext.BaseDirectory, @"StakeholdersData\interest.txt");
+    string pathToInfluenceFile = Path.Combine(AppContext.BaseDirectory, @"StakeholdersData\influence.txt");
+    string pathToResultFile = Path.Combine(AppContext.BaseDirectory, @"StakeholdersData\result.txt");
     // 
-    if(!Directory.Exists(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\StakeholdersData"))){
-      Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\StakeholdersData"));
-
+    if(!Directory.Exists(Path.Combine(AppContext.BaseDirectory, @"StakeholdersData"))){
+      Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, @"StakeholdersData"));
+      Console.WriteLine("Папка StakeholdersData была создана");
     }
 
     // Проверка на наличие нужных файлов
@@ -27,7 +27,6 @@ internal class Program
     if(!File.Exists(pathToInfluenceFile)){
       throw new Exception("Файл influence.txt не был найден");
     }
-
 
     StakeholdersMap = await GetUpdatedStakeholdersMapFromFileAsync(StakeholdersMap, pathToInterestFile, 0);
     StakeholdersMap = await GetUpdatedStakeholdersMapFromFileAsync(StakeholdersMap, pathToInfluenceFile, 1);
@@ -41,8 +40,7 @@ internal class Program
     }
 
     if (await WriteMostImportantStakeholdersToFileAsync(StakeholdersMap, pathToResultFile, StakeholdersMap.Keys.ToArray().Length / 2)){
-      Console.Write("Запись в файл results.txt завершена!\nНажмите любую клавишу, чтобы выйти из программы ");
-      Console.ReadKey();
+      Console.Write("Запись в файл results.txt завершена!");
     }
 
   }
@@ -57,7 +55,7 @@ internal class Program
     // Первую линию сплиттим по символу '|', получаем массив стейкхолдеров
     string[] StakeholdersFromHeader = LinesFromFile[0].Split('|');
 
-    // Добавляем имена стейкхолдеров как значения в наш словарь
+    // Добавляем имена стейкхолдеров как ключи в наш словарь
     for (int i = 0; i < StakeholdersFromHeader.Length; i++)
     {
       StakeholdersFromHeader[i] = StakeholdersFromHeader[i].TrimStart().TrimEnd();
@@ -80,7 +78,7 @@ internal class Program
   private static async Task<bool> WriteMostImportantStakeholdersToFileAsync(Dictionary<string, double[]> StakeholdersMap, string path, double minimumScoreAsCoordinate){
     try
     {
-      // Производим фильтрацию оп координатам, наши координаты должны быть (не включительно) больше минимально переданного рейтинга (половина количества стейкхолдеров)
+      // Производим фильтрацию по координатам, наши координаты должны быть (не включительно) больше минимально переданного рейтинга (половина количества стейкхолдеров в моем решении)
       var FilteredStackholders = StakeholdersMap.Where(stakeholder => stakeholder.Value[0] > minimumScoreAsCoordinate && stakeholder.Value[1] > minimumScoreAsCoordinate).ToDictionary();
       // Записываем ключи отфильтрованных пользователей в файл
       await File.WriteAllLinesAsync(path, FilteredStackholders.Keys.ToArray());

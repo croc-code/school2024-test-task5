@@ -62,15 +62,16 @@ public class StakeholderAnalysis {
     private static HashMap<String, Double> findMainStakeholders(HashMap<String, Double> map) {
         double rank = map.values().stream().mapToDouble(Double::doubleValue).sum(); //Ранг стейкхолдера
         double averageRank = rank / map.size(); //Средний ранг по матрице
+        HashMap<String, Double> result = new HashMap<>();
 
         Iterator<Map.Entry<String, Double>> iterator = map.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Double> entry = iterator.next();
-            if (entry.getValue() < averageRank) { //Оставляет только важных по матрице (которые больше или равны среднему рангу)
-                iterator.remove();
+            if (entry.getValue() > averageRank) { //Добавляет важных по матрице (которые больше среднего ранга)
+                result.put(entry.getKey(), entry.getValue());
             }
         }
-        return map;
+        return result;
     }
 
     /**

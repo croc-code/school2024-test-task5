@@ -1,0 +1,15 @@
+C:\Users\1\source\repos\Stakeholder\bin\Debug\net6.0\Stakeholder.exe
+C:\Users\1\source\repos\Stakeholder\bin\Debug\net6.0\Stakeholder.deps.json
+C:\Users\1\source\repos\Stakeholder\bin\Debug\net6.0\Stakeholder.runtimeconfig.json
+C:\Users\1\source\repos\Stakeholder\bin\Debug\net6.0\Stakeholder.dll
+C:\Users\1\source\repos\Stakeholder\bin\Debug\net6.0\Stakeholder.pdb
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\Stakeholder.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\Stakeholder.AssemblyInfoInputs.cache
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\Stakeholder.AssemblyInfo.cs
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\Stakeholder.csproj.CoreCompileInputs.cache
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\Stakeholder.dll
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\refint\Stakeholder.dll
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\Stakeholder.pdb
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\Stakeholder.genruntimeconfig.cache
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\ref\Stakeholder.dll
+C:\Users\1\source\repos\Stakeholder\obj\Debug\net6.0\Stakeholder.sourcelink.json

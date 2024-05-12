@@ -51,16 +51,21 @@ def get_most_valuable_stakeholders():
         if is_best:
             best_stakeholders.append(stakeholder_name)
 
-    get_plot(ranks_interest, names_interest, ranks_influence, names_influence)
+    show_interest_influence_plot(ranks_interest, names_interest, ranks_influence, names_influence)
     return best_stakeholders
 
 
 import matplotlib.pyplot as plt
 
 
-def get_plot(ranks_interest, names_interest, ranks_influence, names_influence):
-
-    def tests(ranks, names):
+def show_interest_influence_plot(ranks_interest, names_interest, ranks_influence, names_influence):
+    """
+    Функция для отрисовки итоговых точек на графике для визуальной проверки решения
+    """
+    def get_sorted_ranks(ranks, names):
+        """
+        Вспомогательная функция для получения отсортированых по именам стейкхолдеров рангов
+        """
         sorted_ranks = []
         for i in range(len(names)):
             sorted_ranks.append([names[i], ranks[i]])
@@ -69,15 +74,17 @@ def get_plot(ranks_interest, names_interest, ranks_influence, names_influence):
         return sorted_ranks
 
     x, y = [], []
-    for name, val in tests(ranks_interest, names_interest):
+    for name, val in get_sorted_ranks(ranks_interest, names_interest):
         x.append(val)
-    for name, val in tests(ranks_influence, names_influence):
+    for name, val in get_sorted_ranks(ranks_influence, names_influence):
         y.append(val)
     print(x, y)
 
     plt.plot(x, y, 'ro')
     plt.axvline(x=2.5, color='r', linestyle='--')
     plt.axhline(y=2.5, color='r', linestyle='--')
+    plt.xticks([0, 1, 2, 3, 4, 5])
+    plt.yticks([0, 1, 2, 3, 4, 5])
     plt.show()
 
 

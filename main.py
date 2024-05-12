@@ -32,7 +32,10 @@ def get_most_valuable_stakeholders():
 
     ranks_interest = calculate_rank(matrix_interest)
     ranks_influence = calculate_rank(matrix_influence)
-    
+
+    print(ranks_interest)
+    print(ranks_influence)
+
     is_best_dict = {}
     for names, ranks in [(names_interest, ranks_interest), (names_influence, ranks_influence)]:
         for i in range(len(ranks_interest)):
@@ -48,7 +51,34 @@ def get_most_valuable_stakeholders():
         if is_best:
             best_stakeholders.append(stakeholder_name)
 
+    get_plot(ranks_interest, names_interest, ranks_influence, names_influence)
     return best_stakeholders
+
+
+import matplotlib.pyplot as plt
+
+
+def get_plot(ranks_interest, names_interest, ranks_influence, names_influence):
+
+    def tests(ranks, names):
+        sorted_ranks = []
+        for i in range(len(names)):
+            sorted_ranks.append([names[i], ranks[i]])
+        sorted_ranks.sort(key=lambda x: x[0])
+        print(sorted_ranks)
+        return sorted_ranks
+
+    x, y = [], []
+    for name, val in tests(ranks_interest, names_interest):
+        x.append(val)
+    for name, val in tests(ranks_influence, names_influence):
+        y.append(val)
+    print(x, y)
+
+    plt.plot(x, y, 'ro')
+    plt.axvline(x=2.5, color='r', linestyle='--')
+    plt.axhline(y=2.5, color='r', linestyle='--')
+    plt.show()
 
 
 if __name__ == '__main__':

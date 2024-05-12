@@ -1,8 +1,14 @@
-# проверить правильность программы
-
 def get_matrix(filename: str):
     """
-    Функия считывает файл и возвращает матрицу и имена стейкхолдеров
+    Функция для считывания файлов interest.txt и influence.txt
+
+    Parameters
+    ----------
+    filename : путь к файлу
+
+    Returns
+    -------
+    Матрица и list с именами стейкхолдеров
     """
     with open(filename, 'r') as file:
         lines = file.readlines()
@@ -27,65 +33,33 @@ def get_most_valuable_stakeholders():
     """
     Функция для нахождения наиболее важных стейкхолдеров
     """
+    # получение матриц
     matrix_interest, names_interest = get_matrix('interest.txt')
     matrix_influence, names_influence = get_matrix('influence.txt')
 
+    # получение листов с ранками
     ranks_interest = calculate_rank(matrix_interest)
     ranks_influence = calculate_rank(matrix_influence)
 
-    # print(f'{ranks_interest = }')
-    # print(f'{ranks_influence = }')
+    # cередина горизонтальной и вертекальных осей, которая будет разделять плоскость на 4 квадрата
+    middle = len(names_interest) / 2
 
-    is_best_dict = {}
+    is_best_dict = {}  # ключ - имя стейкхолдера, значение - является ли данный стейкхолдер наиболее ценным
     for names, ranks in [(names_interest, ranks_interest), (names_influence, ranks_influence)]:
-        for i in range(len(ranks_interest)):
+        for i in range(len(ranks_interest)):  # идем по матрицам интереса и влияния
             name = names[i]
             rank = ranks[i]
-            if name not in is_best_dict:
+            if name not in is_best_dict:  # по умолчанию всех стейкхолдеров считаем наиболее ценными
                 is_best_dict[name] = True
-            if rank <= 2.5:
+            if rank < middle:  # но если ранг интереса или влияния ниже middle, то считаем этого стейкхолдера НЕ наиболее ценным
                 is_best_dict[name] = False
 
     best_stakeholders = []
-    for stakeholder_name, is_best in is_best_dict.items():
+    for stakeholder_name, is_best in is_best_dict.items():  # получаем лист из наиболее ценных стейкхолдеров
         if is_best:
             best_stakeholders.append(stakeholder_name)
 
-    # функция для визуального тестирования правильности ответа
-    # show_interest_influence_plot(ranks_interest, names_interest, ranks_influence, names_influence)
     return best_stakeholders
-
-
-# import matplotlib.pyplot as plt
-
-
-# def show_interest_influence_plot(ranks_interest, names_interest, ranks_influence, names_influence):
-#     """
-#     Функция для отрисовки итоговых точек на графике для визуальной проверки решения
-#     """
-#     def get_sorted_ranks(ranks, names):
-#         """
-#         Вспомогательная функция для получения отсортированых по именам стейкхолдеров рангов
-#         """
-#         sorted_ranks = []
-#         for i in range(len(names)):
-#             sorted_ranks.append([names[i], ranks[i]])
-#         sorted_ranks.sort(key=lambda x: x[0])
-#         # print(f'{sorted_ranks = }')
-#         return sorted_ranks
-#
-#     x, y = [], []
-#     for name, val in get_sorted_ranks(ranks_interest, names_interest):
-#         x.append(val)
-#     for name, val in get_sorted_ranks(ranks_influence, names_influence):
-#         y.append(val)
-#
-#     plt.plot(x, y, 'ro')
-#     plt.axvline(x=2.5, color='r', linestyle='--')
-#     plt.axhline(y=2.5, color='r', linestyle='--')
-#     plt.xticks([0, 1, 2, 3, 4, 5])
-#     plt.yticks([0, 1, 2, 3, 4, 5])
-#     plt.show()
 
 
 if __name__ == '__main__':

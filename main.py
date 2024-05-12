@@ -33,8 +33,8 @@ def get_most_valuable_stakeholders():
     ranks_interest = calculate_rank(matrix_interest)
     ranks_influence = calculate_rank(matrix_influence)
 
-    print(ranks_interest)
-    print(ranks_influence)
+    # print(f'{ranks_interest = }')
+    # print(f'{ranks_influence = }')
 
     is_best_dict = {}
     for names, ranks in [(names_interest, ranks_interest), (names_influence, ranks_influence)]:
@@ -51,41 +51,41 @@ def get_most_valuable_stakeholders():
         if is_best:
             best_stakeholders.append(stakeholder_name)
 
-    show_interest_influence_plot(ranks_interest, names_interest, ranks_influence, names_influence)
+    # функция для визуального тестирования правильности ответа
+    # show_interest_influence_plot(ranks_interest, names_interest, ranks_influence, names_influence)
     return best_stakeholders
 
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 
-def show_interest_influence_plot(ranks_interest, names_interest, ranks_influence, names_influence):
-    """
-    Функция для отрисовки итоговых точек на графике для визуальной проверки решения
-    """
-    def get_sorted_ranks(ranks, names):
-        """
-        Вспомогательная функция для получения отсортированых по именам стейкхолдеров рангов
-        """
-        sorted_ranks = []
-        for i in range(len(names)):
-            sorted_ranks.append([names[i], ranks[i]])
-        sorted_ranks.sort(key=lambda x: x[0])
-        print(sorted_ranks)
-        return sorted_ranks
-
-    x, y = [], []
-    for name, val in get_sorted_ranks(ranks_interest, names_interest):
-        x.append(val)
-    for name, val in get_sorted_ranks(ranks_influence, names_influence):
-        y.append(val)
-    print(x, y)
-
-    plt.plot(x, y, 'ro')
-    plt.axvline(x=2.5, color='r', linestyle='--')
-    plt.axhline(y=2.5, color='r', linestyle='--')
-    plt.xticks([0, 1, 2, 3, 4, 5])
-    plt.yticks([0, 1, 2, 3, 4, 5])
-    plt.show()
+# def show_interest_influence_plot(ranks_interest, names_interest, ranks_influence, names_influence):
+#     """
+#     Функция для отрисовки итоговых точек на графике для визуальной проверки решения
+#     """
+#     def get_sorted_ranks(ranks, names):
+#         """
+#         Вспомогательная функция для получения отсортированых по именам стейкхолдеров рангов
+#         """
+#         sorted_ranks = []
+#         for i in range(len(names)):
+#             sorted_ranks.append([names[i], ranks[i]])
+#         sorted_ranks.sort(key=lambda x: x[0])
+#         # print(f'{sorted_ranks = }')
+#         return sorted_ranks
+#
+#     x, y = [], []
+#     for name, val in get_sorted_ranks(ranks_interest, names_interest):
+#         x.append(val)
+#     for name, val in get_sorted_ranks(ranks_influence, names_influence):
+#         y.append(val)
+#
+#     plt.plot(x, y, 'ro')
+#     plt.axvline(x=2.5, color='r', linestyle='--')
+#     plt.axhline(y=2.5, color='r', linestyle='--')
+#     plt.xticks([0, 1, 2, 3, 4, 5])
+#     plt.yticks([0, 1, 2, 3, 4, 5])
+#     plt.show()
 
 
 if __name__ == '__main__':

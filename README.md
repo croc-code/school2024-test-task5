@@ -50,6 +50,91 @@ Stakeholder 3
 
 ## Автор решения
 
+Абдуллаев Егор Низамиевич
+
 ## Описание реализации
 
+Для решения тестового задания я использовал Java 17. У решения есть 3 этапа.
+
+1.  Считывание матриц:
+
+    ```java
+    private void readInfluence(Map<String, Importance> stakeholderDataMap) {
+        String[] stakeholders;
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_TO_INFLUENCE))) {
+            stakeholders = prepareStakeholders(reader, stakeholderDataMap);
+    
+            for (String stakeholder : stakeholders) {
+                double influence = calculateArraySum(reader.readLine().split(" "));
+                stakeholderDataMap.get(stakeholder).setInfluence(influence);
+            }
+        } catch (IOException e) {
+            throw new FileOperationException("Произошла ошибка при чтении файла по пути: " +
+                    PATH_TO_INFLUENCE, e);
+        }
+    }
+    ```
+    Методы readInfluence и readInterest читают схожим образом входные матрицы и записывают в мапу соответствующие параметры. Пути для чтения задаются при инициализации класса, в котором они находятся. 
+    ```java
+    public Map<String, Importance> getStakeholderDataMap() {
+        Map<String, Importance> stakeholderDataMap = new HashMap<>();
+        readInfluence(stakeholderDataMap);
+        readInterest(stakeholderDataMap);
+        return stakeholderDataMap;
+    }
+    ```
+    getStakeholderDataMap формирует мапу с помощью вышеперечисленных методов и возвращает её.
+    ```java
+    @SneakyThrows
+    private String[] prepareStakeholders(BufferedReader reader, Map<String, Importance> stakeholderDataMap) {
+        String[] stakeholders;
+        stakeholders = reader.readLine().split(" \\| ");
+        if (stakeholderDataMap.isEmpty()) {
+            for (String stakeholder : stakeholders) {
+                stakeholderDataMap.put(stakeholder, new Importance());
+            }
+        } else if (!Set.of(stakeholders).equals(stakeholderDataMap.keySet())) {
+            throw new DataValidationException("Несоответствие наименований заинтересованных сторон");
+        }
+        return stakeholders;
+    }
+    ```
+    prepareStakeholders обрабатывает первую строку матрицы. Если мапа ещё не была заполнена именами стейкхолдеров, заполняет, иначе проверяет соответствие имен стейкхолдеров.
+2. Нахождение важных стейкхолдеров(находящихся в правом верхнем квадранте координатной плоскости):
+
+    ```java
+    public String findMostImportantStakeholders() {
+        double size = stakeholderDataMap.size();
+
+        return stakeholderDataMap.entrySet().stream()
+                .filter(stringImportance -> stringImportance.getValue().getInfluence() >= size / 2 &&
+                        stringImportance.getValue().getInterest() >= size / 2)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.joining("\n"));
+    }
+    ```
+    Чтобы найти самых важных стейкхолдеров, мы берем количество стейкхолдеров(size), делим пополам(это будет являться границами по осям X,Y) и смотрим, являются ли значения влияния и интереса у каждого элемента мапы больше или равными size / 2. \
+    С помощью stream api осуществляем это и формируем выходную строку которая представляет собой имена стейкхолдеров, разделенные "\n". Осталось только записать эту строку в файл.
+3. Запись в файл result.txt:
+    ```java
+    public void writeMostImportantStakeholders(String mostImportantStakeholders) {
+        createFileIfMissing();
+
+        try {
+            Files.writeString(PATH_TO_RESULT, mostImportantStakeholders);
+        } catch (IOException e) {
+            throw new FileOperationException("Произошла ошибка во время записи в файл по пути: " +
+                    PATH_TO_RESULT, e);
+        }
+    }
+    ```
+   createFileIfMissing - вспомогательный метод, который создаёт result.txt, если он не был создан
 ## Инструкция по сборке и запуску решения
+
+Клонировать репозиторий
+
+Есть 2 варианта запуска на windows
+1. Установить IntelliJ IDEA, открыть репозиторий и запустить Main класс
+2. Установить jdk 17 https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html \
+    Затем нужно добавить JAVA_HOME в переменные среды. \
+    Открыть командную строку, перейти в корневую папку проекта и прописать следующую команду: gradlew clean run

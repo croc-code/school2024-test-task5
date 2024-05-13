@@ -1,3 +1,4 @@
+# функция чтения с файла
 def read_from_file(file_name):
   try:
     with open(file_name, 'r') as file:
@@ -17,6 +18,7 @@ def read_from_file(file_name):
   except Exception as exc:
     print(f"Error {exc}")
 
+#функция записи в файл значений списка
 def write_to_file(stakeholders_list, file_name):
   try:
     with open(file_name, 'w') as file:
@@ -29,6 +31,7 @@ def write_to_file(stakeholders_list, file_name):
   except Exception as exc:
     print(f"Error {exc}")
 
+# функция получения списка важных стейкхолдеров по критерию
 def get_important_stakeholder_by_criteria(stakeholders, score_table):
   important_stakeholders = []
   mid = len(score_table[0]) / 2
@@ -39,6 +42,7 @@ def get_important_stakeholder_by_criteria(stakeholders, score_table):
       important_stakeholders.append(stakeholders[i])
   return important_stakeholders
 
+# точка входа в программу
 def main():
   stakeholders, interest_scores = read_from_file("interest.txt")
   stakeholders, influence_scores = read_from_file("influence.txt")

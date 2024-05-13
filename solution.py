@@ -1,19 +1,33 @@
 def read_from_file(file_name):
-  with open(file_name, 'r') as file:
-    score_table = []
-    # первая строчка (строка стейкхолдеров) считывается отдельно от таблицы сравнений
-    for i, line in enumerate(file.readlines()):
-      if i == 0:
-        stakeholders = line.rstrip().split(" | ")
-        continue
-      score_table.append(line.rstrip().split(" "))
-      score_table[i - 1][i - 1] = "0"                 # вместо "_" выставляем "0" чтобы не влияло на сумму
-    return stakeholders, score_table
+  try:
+    with open(file_name, 'r') as file:
+      score_table = []
+      # первая строчка (строка стейкхолдеров) считывается отдельно от таблицы сравнений
+      for i, line in enumerate(file.readlines()):
+        if i == 0:
+          stakeholders = line.rstrip().split(" | ")
+          continue
+        score_table.append(line.rstrip().split(" "))
+        score_table[i - 1][i - 1] = "0"                 # вместо "_" выставляем "0" чтобы не влияло на сумму
+      return stakeholders, score_table
+  except FileNotFoundError:
+    print("The file was not found.")
+  except PermissionError:
+    print("Permission error")
+  except Exception as exc:
+    print(f"Error {exc}")
 
 def write_to_file(stakeholders_list, file_name):
-  with open(file_name, 'w') as file:
-    for item in stakeholders_list:
-      file.write(f"{item}\n")
+  try:
+    with open(file_name, 'w') as file:
+      for item in stakeholders_list:
+        file.write(f"{item}\n")
+  except FileNotFoundError:
+    print("The file was not found.")
+  except PermissionError:
+    print("Permission error")
+  except Exception as exc:
+    print(f"Error {exc}")
 
 def get_important_stakeholder_by_criteria(stakeholders, score_table):
   important_stakeholders = []
